@@ -8,9 +8,9 @@ extern int _clog_init(void);
 
 #define clog_init() _clog_init()
 #define clog_fin() zlog_fin()
-#define clog_debug(__ARGS...) dzlog_debug(##__ARGS)
-#define clog_info(__ARGS...) dzlog_info(##__ARGS)
-#define clog_warn(__ARGS...) dzlog_warn(##__ARGS)
-#define clog_error(__ARGS...) dzlog_error(##__ARGS)
+#define clog_debug(...) dzlog_debug(__VA_ARGS__)
+#define clog_info(...) dzlog_info(__VA_ARGS__)
+#define clog_warn(...) dzlog_warn(__VA_ARGS__)
+#define clog_error(...) dzlog_error(__VA_ARGS__)
 
 #endif

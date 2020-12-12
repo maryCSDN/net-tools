@@ -18,9 +18,12 @@ int main(int argc, char **argv)
  */ 
 static int net_tools_init(void)
 {
-    if (clog_init() != 0)
+    int rs;
+    if ( (rs = clog_init()) != 0)
     {
-        printf("Failed to log initialize.\n");
+        printf("Failed to log initialize, [%d].\n", rs);
         return -1;
     }
+
+    return 0;
 }
