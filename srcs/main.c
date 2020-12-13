@@ -1,4 +1,5 @@
 #include "clog.h"
+#include "broadcast.h"
 
 static int net_tools_init(void);
 
@@ -9,6 +10,8 @@ int main(int argc, char **argv)
         return -1;
     }
 
+    send_broadcast(BV_DEFAULT);
+    recv_broadcast();
     clog_info("this is zlog <info>.");
     return 0;
 }

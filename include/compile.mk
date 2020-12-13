@@ -6,12 +6,14 @@ OBJS				= $(SRCS:.c=.o)
 
 # compile environment
 CC					= gcc
-CFLAGS				+= -g -Wall -I/usr/local/include/ -I$(SRCS_ROOT_FDIR)/clog/ -I$(SRCS_ROOT_FDIR)/com/
+CFLAGS				+= -g -Wall -I/usr/local/include/ -I$(SRCS_ROOT_FDIR)/clog/ -I$(SRCS_ROOT_FDIR)/common/
 DFLAGS				+= -L/usr/local/bin/
 LIB_LINK			+= -lzlog
 
-_compile:$(NET_TOOLS_BIN)
+_compile:$(NET_TOOLS_BIN) _clear
 
+_clear:
+	rm --force $(OBJS)
 
 $(NET_TOOLS_BIN):$(OBJS)
 	$(CC) $(CFLAGS) $(DFLAGS) $^ -o $@ $(LIB_LINK)
