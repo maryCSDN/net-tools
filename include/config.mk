@@ -8,7 +8,7 @@ LOG_DIR 		= /var/log/net-tools
 # 创建运行时需要的文件目录
 _create_need_direct:
 	mkdir -p -v $(CONFIG_DIR)
-	chmod 777 $(CONFIG_DIR)/*
+	chmod 777 $(CONFIG_DIR)
 	mkdir -p -v $(LOG_DIR)
 	chmod 777 $(LOG_DIR)
 
