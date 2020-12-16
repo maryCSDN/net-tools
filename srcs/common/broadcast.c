@@ -2,7 +2,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
-#include <strings.h>
+#include <string.h>
 #include <unistd.h>
 #include "clog.h"
 #include "broadcast.h"
@@ -32,17 +32,9 @@ int send_broadcast(char dv)
     to_addr.sin_port = htons(BROADCAST_PORT);
     int addr_len = sizeof(to_addr);
 
-    int i = 5;
-    char data[] = {0x01, 0x02, 0x03, 0x04, 0x05}; 
-    while(i > 0 && i--)
+    if (sendto(sock, &dv, sizeof(dv), 0, (struct sockaddr *)&to_addr, addr_len) == -1)
     {
-        sleep(1);
-        if(sendto(sock, data, sizeof(data), 0, (struct sockaddr*)&to_addr, addr_len) == -1)
-        {
-            clog_error("Failed to send broadcast.[ERRORCODE=%d]", errno);
-            break;
-        }
-        clog_debug("Send broadcast. [%d]", i);
+        clog_error("Failed to send broadcast.[ERRORCODE=%d]", errno);
     }
 
     clog_info("Broadcast finished.");
@@ -58,14 +50,14 @@ _EXCEPT:
 }
 
 
-int recv_broadcast()
+void *recv_broadcast(void *args)
 {
     int sock = -1;
 
     if ((sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
     {
         clog_error("Failed to cretae socket. [ERRORCODE=%d]", errno);
-        return -1;
+        return NULL;
     }
 
     //设置套接字的属性使它能够在计算机重启的时候可以再次使用套接字的端口和IP
@@ -85,9 +77,10 @@ int recv_broadcast()
     if (bind(sock, (struct sockaddr *)&my_addr, sizeof(struct sockaddr)) != 0)
     {
         clog_error("Failed to bind socket addr. [ERRORCODE=%d]", errno);
-        return -1;
+        return NULL;
     }
 
+    clog_info("Recv broadcast.");
     struct sockaddr_in from_addr;
     socklen_t len = sizeof(from_addr);
     char buf[1024] = {0};
@@ -96,17 +89,18 @@ int recv_broadcast()
         //读取数据
         if (recvfrom(sock, buf, sizeof(buf) - 1, 0, (struct sockaddr*) &from_addr, &len))
         {
-            clog_info("Recv:%s，from ip:%s.", buf, inet_ntoa(from_addr.sin_addr));
+            clog_info("Recv:%d，from ip:%s.", buf[0], inet_ntoa(from_addr.sin_addr));
         }
+        memset(buf, 0, sizeof(buf));
     }
 
     close(sock);
-    return 0;
+    return NULL;
 
 _EXCEPT:
     if (sock != -1)
     {
         close(sock);
     }
-    return -1;
+    return NULL;
 }

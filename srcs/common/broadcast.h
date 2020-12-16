@@ -9,6 +9,6 @@
 
 
 extern int send_broadcast(char dv);
-extern int recv_broadcast();
+extern void * recv_broadcast(void *args);
 
 #endif
