@@ -8,6 +8,7 @@
 #define ERROR_LOG(format, args...) printf("[%s:%s:%d]"format"\n", __FILE__, __func__, __LINE__, ##args)
 
 static int net_tools_init(void);
+static void listen_process(void);
 
 int main(int argc, char **argv)
 {
@@ -36,4 +37,9 @@ static int net_tools_init(void)
     }
 
     return 0;
+}
+
+static void listen_process(void)
+{
+    return;
 }

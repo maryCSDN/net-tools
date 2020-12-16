@@ -9,3 +9,4 @@ pre:
 
 clean:
 	rm $(NET_TOOLS_BIN)
+	$(MAKE) _clear
