@@ -1,5 +1,5 @@
 # net-tools 
-NET_TOOLS_BIN		= net-tools
+NET_TOOLS_BIN		= cnet-tools
 SRCS_ROOT_FDIR		= srcs
 SRCS_CHILD_DIRS 	= $(shell find $(SRCS_ROOT_FDIR) -maxdepth 3 -type d) 
 SRCS			   	= $(foreach DIR, $(SRCS_CHILD_DIRS), $(wildcard $(DIR)/*.c))
@@ -12,7 +12,8 @@ OPENSOURCE_IMPORT	= /usr/local
 
 # compile environment
 CC					= gcc
-CFLAGS				+= -g -Wall -I$(OPENSOURCE_IMPORT)/include/ -I$(SRCS_ROOT_FDIR)/clog/ -I$(SRCS_ROOT_FDIR)/common/
+CFLAGS				+= -g -Wall -I$(OPENSOURCE_IMPORT)/include/ -I$(SRCS_ROOT_FDIR)/clog/ -I$(SRCS_ROOT_FDIR)/common/ 
+CFLAGS				+= -I$(SRCS_ROOT_FDIR)/server/ -I$(SRCS_ROOT_FDIR)/client/ -I$(SRCS_ROOT_FDIR)/command-line/ 
 DFLAGS				+= -L$(OPENSOURCE_IMPORT)/lib/
 LIB_LINK			+= -lzlog
 
