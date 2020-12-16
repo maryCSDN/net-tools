@@ -86,6 +86,7 @@ void *recv_broadcast(void *args)
     char buf[1024] = {0};
     while (1)
     {
+        clog_debug("waiting...");
         //读取数据
         if (recvfrom(sock, buf, sizeof(buf) - 1, 0, (struct sockaddr*) &from_addr, &len))
         {
