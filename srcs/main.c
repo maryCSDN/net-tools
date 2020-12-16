@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include <pthread.h>
 #include "clog.h"
 #include "server.h"
@@ -21,12 +22,17 @@ int main(int argc, char **argv)
     pthread_t pid = server_start();
     client_start();    
     listen_process();
-    if (pthread_join(pid, NULL))
-    {
-        clog_error("Server error.");
-        return -1;
-    }
+    // if (pthread_join(pid, NULL))
+    // {
+    //     clog_error("Server error.");
+    //     return -1;
+    // }
 
+    while (1)
+    {
+        clog_info("main while.");
+        sleep(1);
+    }
     return 0;
 }
 
