@@ -1,7 +1,10 @@
+
+#include "broadcast.h"
 #include "server.h"
 
 int server_start()
 {
+    recv_broadcast();
     return 0;
 }
 
