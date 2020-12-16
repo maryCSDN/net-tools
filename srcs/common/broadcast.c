@@ -32,13 +32,13 @@ int send_broadcast(char dv)
     to_addr.sin_port = htons(BROADCAST_PORT);
     int addr_len = sizeof(to_addr);
 
-    clog_debug("Send broadcast.");
     if (sendto(sock, &dv, sizeof(dv), 0, (struct sockaddr *)&to_addr, addr_len) == -1)
     {
         clog_error("Failed to send broadcast.[ERRORCODE=%d]", errno);
         return -1;
     }
 
+    clog_debug("Send broadcast finshed.");
     close(sock);
     return 0;
 
