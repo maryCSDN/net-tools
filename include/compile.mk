@@ -27,7 +27,7 @@ _clear_opensource:
 	cd $(OPENSOURCE)/zlog && $(MAKE) clean
 
 # enter
-_compile:_clear_opensource _install_opensource $(NET_TOOLS_BIN) _clear
+_compile:_install_opensource $(NET_TOOLS_BIN) _clear _clear_opensource
 	cp -a $(NET_TOOLS_BIN) /usr/local/bin/
 
 # clear
