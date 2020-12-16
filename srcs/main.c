@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <pthread.h>
 #include "clog.h"
 #include "server.h"
 #include "client.h"
@@ -17,9 +18,14 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    server_start();
+    pthread_t pid = server_start();
     client_start();    
     listen_process();
+    if (pthread_join(pid, NULL))
+    {
+        clog_error("Server error.");
+        return -1;
+    }
 
     return 0;
 }

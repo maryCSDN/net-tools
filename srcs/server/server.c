@@ -4,7 +4,7 @@
 #include "clog.h"
 #include "server.h"
 
-int server_start()
+pthread_t server_start()
 {
     pthread_t tidp;
 
@@ -15,19 +15,8 @@ int server_start()
     }
 
     sleep(0);
-    return 0;
+    return tidp;
 }
-
-
-// /* 线程pthread睡眠2s，此时main可以先执行 */
-// printf("mian continue!\n");
- 
-//  /* 等待线程pthread释放 */
-//   if (pthread_join(tidp, NULL))                  
-//   {
-//     printf("thread is not exit...\n");
-//  return -2;
-// }
 
 
 int server_stop()
