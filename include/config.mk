@@ -15,4 +15,4 @@ _create_need_direct:
 
 # 入口
 _config:_create_need_direct $(CONFIG_DIR)
-	cp -f config/*.conf $(CONFIG_DIR)/
+	cp -a config/*.conf $(CONFIG_DIR)/

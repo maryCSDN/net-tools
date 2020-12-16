@@ -1,5 +1,11 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdarg.h>
 #include "clog.h"
-#include "broadcast.h"
+#include "server.h"
+#include "client.h"
+
+#define ERROR_LOG(format, args...) printf("[%s:%s:%d]"format"\n", __FILE__, __func__, __LINE__, ##args)
 
 static int net_tools_init(void);
 
@@ -10,9 +16,10 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    send_broadcast(BV_DEFAULT);
-    recv_broadcast();
-    clog_info("this is zlog <info>.");
+    server_start();
+    client_start();    
+    listen_process();
+
     return 0;
 }
 
@@ -24,7 +31,7 @@ static int net_tools_init(void)
     int rs;
     if ( (rs = clog_init()) != 0)
     {
-        printf("Failed to log initialize, [%d].\n", rs);
+        ERROR_LOG("Failed to log initialize, [%d]", rs);
         return -1;
     }
 

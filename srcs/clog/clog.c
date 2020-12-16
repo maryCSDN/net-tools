@@ -3,7 +3,6 @@
 #define _LOG_CONF_FILE          "/etc/net-tools/clog.conf"
 #define _LOG_RULES_DEFAULT      "net-tools-default"
 
-int _clog_init(void);
 
 int _clog_init(void)
 {
