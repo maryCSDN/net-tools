@@ -81,7 +81,6 @@ void *recv_broadcast(void *args)
         return NULL;
     }
 
-    clog_info("Recv broadcast.");
     struct sockaddr_in from_addr;
     socklen_t len = sizeof(from_addr);
     char buf[1024] = {0};
