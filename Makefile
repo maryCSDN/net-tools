@@ -8,5 +8,5 @@ pre:
 	@echo "Start building..."
 
 clean:
-	rm $(NET_TOOLS_BIN)
+	rm -f $(NET_TOOLS_BIN)
 	$(MAKE) _clear

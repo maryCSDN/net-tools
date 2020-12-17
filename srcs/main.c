@@ -58,8 +58,3 @@ static int net_tools_init(void)
 
     return 0;
 }
-
-static void listen_process(void)
-{
-    return;
-}

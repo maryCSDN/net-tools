@@ -30,12 +30,12 @@ typedef enum _process_status_value
  * process check
  * psv: process statue value
  */ 
-extern inline bool is_active(psv_t psv);
-extern inline bool is_except(psv_t psv);
-extern inline bool is_sleep(psv_t psv);
-extern inline bool is_exit(psv_t psv);
-extern inline bool is_online(void);
-extern inline psv_t set_psv(psv_t psv);
-extern inline psv_t get_psv(void);
+extern bool is_active(psv_t psv);
+extern bool is_except(psv_t psv);
+extern bool is_sleep(psv_t psv);
+extern bool is_exit(psv_t psv);
+extern bool is_online(void);
+extern psv_t set_psv(psv_t psv);
+extern psv_t get_psv(void);
 extern char *to_psvstring(psv_t psv);
 #endif
