@@ -10,7 +10,6 @@
 #include "client.h"
 
 static int net_tools_init(void);
-static void listen_process(void);
 
 int main(int argc, char **argv)
 {
@@ -37,8 +36,7 @@ int main(int argc, char **argv)
     }
 
     client_start();
-    set_psv(_PSV_ACTIVE);    
-    listen_process();
+    set_psv(_PSV_ACTIVE);
     pthread_join(pid, NULL);
 
     return 0;
