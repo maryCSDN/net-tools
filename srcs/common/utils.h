@@ -2,10 +2,40 @@
 #define __NET_TOOLS_UTILS_H
 
 #include <stdbool.h>
+#include <stdarg.h>
+#include <stdio.h>
 
-bool is_active();
-bool is_except();
-bool is_sleep();
-bool is_exit();
 
+typedef enum _process_status_value
+{
+    PSV_EXIT = 0,
+#define _PSV_EXIT        PSV_EXIT
+    PSV_ACTIVE,
+#define _PSV_ACTIVE      PSV_ACTIVE
+    PSV_EXCEPT,
+#define _PSV_EXCEPT      PSV_EXCEPT
+    PSV_SLEEP,
+#define _PSV_SLEEP       PSV_SLEEP
+    PSV_BORDER, /* invalid value */
+#define _PSV_BORDER      PSV_BORDER
+}psv_t;
+
+
+/**
+ * console log
+ */
+#define CONSOLE_LOG(format, args...) printf("[%s:%s:%d]"format"\n", __FILE__, __func__, __LINE__, ##args)
+
+/**
+ * process check
+ * psv: process statue value
+ */ 
+extern inline bool is_active(psv_t psv);
+extern inline bool is_except(psv_t psv);
+extern inline bool is_sleep(psv_t psv);
+extern inline bool is_exit(psv_t psv);
+extern inline bool is_online(void);
+extern inline psv_t set_psv(psv_t psv);
+extern inline psv_t get_psv(void);
+extern char *to_psvstring(psv_t psv);
 #endif

@@ -4,6 +4,8 @@
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include "clog.h"
 #include "broadcast.h"
 
@@ -61,7 +63,7 @@ void *recv_broadcast(void *args)
         return NULL;
     }
 
-    //设置套接字的属性使它能够在计算机重启的时候可以再次使用套接字的端口和IP
+    /* 设置套接字的属性使它能够在计算机重启的时候可以再次使用套接字的端口和IP */
     int sock_reuse = 1;
     if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (char *)&sock_reuse, sizeof(sock_reuse)) != 0)
     {
@@ -69,12 +71,22 @@ void *recv_broadcast(void *args)
         goto _EXCEPT;
     }
 
+    /* 设置套接字的属性 nonblock */
+    struct timeval sock_tv;
+    sock_tv.tv_sec = SOCKET_TIMEOUT_SEC;
+    sock_tv.tv_usec = SOCKET_TIMEOUT_USEC;
+    if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &sock_tv, sizeof(sock_tv)) != 0)
+    {
+        clog_error("Set broadcast server socket timeout error.");
+        return NULL;
+    }
+
+    /* Binding socket address */
     struct sockaddr_in my_addr;
+    bzero(&my_addr, sizeof(my_addr));
     my_addr.sin_family = AF_INET;
     my_addr.sin_port = htons(BROADCAST_PORT);
     my_addr.sin_addr.s_addr = INADDR_ANY;
-    bzero(&(my_addr.sin_zero), 8);
-
     if (bind(sock, (struct sockaddr *)&my_addr, sizeof(struct sockaddr)) != 0)
     {
         clog_error("Failed to bind socket addr. [ERRORCODE=%d]", errno);
@@ -82,18 +94,37 @@ void *recv_broadcast(void *args)
     }
 
     struct sockaddr_in from_addr;
+    bzero(&from_addr, sizeof(from_addr));
     socklen_t len = sizeof(from_addr);
-    char buf[1024] = {0};
+    char buf[16] = {0};
+    unsigned int wait_time = 1;
+    static bool init_flag = true;
     while (1)
-    {
+    {      
         clog_debug("waiting...");
         //读取数据
-        if (recvfrom(sock, buf, sizeof(buf) - 1, 0, (struct sockaddr*) &from_addr, &len))
+        if (recvfrom(sock, buf, sizeof(buf) - 1, 0, (struct sockaddr*) &from_addr, &len) > 0)
         {
+            if (init_flag) {init_flag = false;}
             clog_info("Recv:%d，from ip:%s.", buf[0], inet_ntoa(from_addr.sin_addr));
+            bzero(buf, sizeof(buf));
+            bzero(&from_addr, sizeof(from_addr));
+            wait_time = 1;
         }
-        memset(buf, 0, sizeof(buf));
-        clog_debug("Recv broadcast.");
+        else
+        {
+            if (init_flag) {system("iptables -A INPUT -p udp --dport 9999 -j ACCEPT");init_flag = false;}
+            clog_info("Wait time out:%d", errno);
+
+            if (wait_time < 5)
+            {
+                usleep((wait_time++) * BROADCAST_TIMEOUT_UNIT);
+            }
+            else
+            {
+                usleep((wait_time) * BROADCAST_TIMEOUT_UNIT);
+            }                       
+        }
     }
 
     close(sock);

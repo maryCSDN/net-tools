@@ -14,7 +14,7 @@ pthread_t server_start()
         return -1;
     }
 
-    sleep(1);
+    usleep(BROADCAST_TIMEOUT_UNIT);
     return tidp;
 }
 

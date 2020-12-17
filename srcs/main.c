@@ -1,38 +1,46 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdarg.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <signal.h>
 #include "clog.h"
+#include "constant.h"
+#include "utils.h"
 #include "server.h"
 #include "client.h"
-
-#define ERROR_LOG(format, args...) printf("[%s:%s:%d]"format"\n", __FILE__, __func__, __LINE__, ##args)
 
 static int net_tools_init(void);
 static void listen_process(void);
 
 int main(int argc, char **argv)
 {
+    signal(SIGCHLD, SIG_IGN);
+
+    if (is_online())
+    {
+        int psv = get_psv();
+        CONSOLE_LOG("Status:[%s]", psv < 0 ? _PSV_EXCEPT_STRING: to_psvstring(psv));
+        // todo exit process
+        return 0;
+    }
+
     if (net_tools_init() != 0)
     {
         return -1;
     }
 
     pthread_t pid = server_start();
-    client_start();    
-    listen_process();
-    // if (pthread_join(pid, NULL))
-    // {
-    //     clog_error("Server error.");
-    //     return -1;
-    // }
-
-    while (1)
+    if (pid < 1)
     {
-        clog_info("main while.");
-        sleep(1);
+        clog_error("Server error.");
+        return -1;
     }
+
+    client_start();
+    set_psv(_PSV_ACTIVE);    
+    listen_process();
+    pthread_join(pid, NULL);
+
     return 0;
 }
 
@@ -44,7 +52,7 @@ static int net_tools_init(void)
     int rs;
     if ( (rs = clog_init()) != 0)
     {
-        ERROR_LOG("Failed to log initialize, [%d]", rs);
+        CONSOLE_LOG("Failed to log initialize, [%d]", rs);
         return -1;
     }
 
