@@ -8,7 +8,7 @@
 #include "constant.h"
 #include "server.h"
 #include "client.h"
-#include "cheat.h"
+#include "netops.h"
 
 
 int cheat(void)

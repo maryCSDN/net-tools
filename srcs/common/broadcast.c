@@ -98,14 +98,14 @@ void *recv_broadcast(void *args)
     socklen_t len = sizeof(from_addr);
     char buf[16] = {0};
     unsigned int wait_time = 1;
-    static bool init_flag = true;
+    //static bool init_flag = true;
     while (1)
     {      
         clog_debug("waiting...");
         //读取数据
         if (recvfrom(sock, buf, sizeof(buf) - 1, 0, (struct sockaddr*) &from_addr, &len) > 0)
         {
-            if (init_flag) {init_flag = false;}
+            //if (init_flag) {init_flag = false;}
             clog_info("Recv:%d，from ip:%s.", buf[0], inet_ntoa(from_addr.sin_addr));
             bzero(buf, sizeof(buf));
             bzero(&from_addr, sizeof(from_addr));
@@ -113,8 +113,8 @@ void *recv_broadcast(void *args)
         }
         else
         {
-            if (init_flag) {system("sudo iptables -A INPUT -p udp --dport 9999 -j ACCEPT");init_flag = false;}
-            clog_info("Wait time out:%d", errno);
+            // if (init_flag) {system("sudo iptables -A INPUT -p udp --dport 9999 -j ACCEPT");init_flag = false;}
+            clog_debug("Wait time out:%d", errno);
 
             if (wait_time < 5)
             {

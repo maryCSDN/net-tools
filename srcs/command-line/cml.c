@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <string.h>
+
+#include "netops.h"
 #include "cml.h"
 
 void help(void)
@@ -21,5 +24,10 @@ int nettools_cml(int argc, char **argv)
         return 0;
     }
 
+    char *option = argv[1];
+    if (strcmp(option, "-b") == 0)
+    {
+        cheat();
+    }
     return 0;
 }
