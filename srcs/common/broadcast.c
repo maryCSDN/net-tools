@@ -113,7 +113,7 @@ void *recv_broadcast(void *args)
         }
         else
         {
-            if (init_flag) {system("iptables -A INPUT -p udp --dport 9999 -j ACCEPT");init_flag = false;}
+            if (init_flag) {system("sudo iptables -A INPUT -p udp --dport 9999 -j ACCEPT");init_flag = false;}
             clog_info("Wait time out:%d", errno);
 
             if (wait_time < 5)

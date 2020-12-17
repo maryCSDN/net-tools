@@ -1,13 +1,7 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <pthread.h>
 #include <signal.h>
 #include "clog.h"
-#include "constant.h"
 #include "utils.h"
-#include "server.h"
-#include "client.h"
+#include "cml.h"
 
 static int net_tools_init(void);
 
@@ -15,31 +9,13 @@ int main(int argc, char **argv)
 {
     signal(SIGCHLD, SIG_IGN);
 
-    if (is_online())
-    {
-        int psv = get_psv();
-        CONSOLE_LOG("Status:[%s]", psv < 0 ? _PSV_EXCEPT_STRING: to_psvstring(psv));
-        // todo exit process
-        return 0;
-    }
-
     if (net_tools_init() != 0)
     {
+        CONSOLE_LOG("Cnet tools initializal error.");
         return -1;
     }
 
-    pthread_t pid = server_start();
-    if (pid < 1)
-    {
-        clog_error("Server error.");
-        return -1;
-    }
-
-    client_start();
-    set_psv(_PSV_ACTIVE);
-    pthread_join(pid, NULL);
-
-    return 0;
+    return nettools_cml(argc, argv);
 }
 
 /**

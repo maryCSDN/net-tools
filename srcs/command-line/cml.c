@@ -1,16 +1,16 @@
-
+#include <stdio.h>
 #include "cml.h"
 
 void help(void)
 {
     printf("Usage:cnet-tools [OPTIONS] [TAGS] ...\n\
-            \tOPTIONS:\n\
-            \t    -b               broadcast\n\
-            \t    --arp,           arp attack\n\
-            \t    \n\
-            \tEXIT:\n\
-            \t    0 - ok\n\
-            \t    -1 - error\n");
+            \rOPTIONS:\n\
+            \r    -b               broadcast\n\
+            \r    --arp,           arp attack\n\
+            \r    \n\
+            \rEXIT:\n\
+            \r    0 - ok\n\
+            \r   -1 - error\n");
 }
 
 int nettools_cml(int argc, char **argv)
