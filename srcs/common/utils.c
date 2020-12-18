@@ -1,10 +1,14 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "constant.h"
-#include "clog.h"
 #include "utils.h"
 
 static char *g_psv_string[_PSV_BORDER] = {_PSV_EXIT_STRING, _PSV_ACTIVE_STRING, _PSV_EXCEPT_STRING, _PSV_SLEEP_STRING};
+
+int _clog_init(void)
+{
+    return dzlog_init(_LOG_CONF_FILE, _LOG_RULES_DEFAULT);    
+}
 
 bool is_active(psv_t psv)
 {

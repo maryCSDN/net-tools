@@ -1,5 +1,4 @@
 #include <signal.h>
-#include "clog.h"
 #include "utils.h"
 #include "cml.h"
 

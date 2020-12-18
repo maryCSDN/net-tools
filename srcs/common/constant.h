@@ -6,6 +6,8 @@
  * macro
  */ 
 #define _PROCESS_STATUS_FILE        "/tmp/.cnet-tools"
+#define _LOG_CONF_FILE              "/etc/net-tools/clog.conf"
+#define _LOG_RULES_DEFAULT          "net-tools-default"
 /**
  * Process status value string constants
  */  

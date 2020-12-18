@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdarg.h>
 #include <stdio.h>
-
+#include <zlog.h>
 
 typedef enum _process_status_value
 {
@@ -25,6 +25,17 @@ typedef enum _process_status_value
  * console log
  */
 #define CONSOLE_LOG(format, args...) printf("[%s:%s:%d]"format"\n", __FILE__, __func__, __LINE__, ##args)
+
+/**
+ * clog -> zlog
+ */ 
+extern int _clog_init(void);
+#define clog_init() _clog_init()
+#define clog_fin() zlog_fin()
+#define clog_debug(...) dzlog_debug(__VA_ARGS__)
+#define clog_info(...) dzlog_info(__VA_ARGS__)
+#define clog_warn(...) dzlog_warn(__VA_ARGS__)
+#define clog_error(...) dzlog_error(__VA_ARGS__)
 
 /**
  * process check

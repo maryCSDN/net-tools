@@ -12,7 +12,7 @@ OPENSOURCE_IMPORT	= /usr/local
 
 # compile environment
 CC					= gcc
-CFLAGS				+= -g -Wall -I$(OPENSOURCE_IMPORT)/include/ -I$(SRCS_ROOT_FDIR)/clog/ -I$(SRCS_ROOT_FDIR)/common/ 
+CFLAGS				+= -g -Wall -I$(OPENSOURCE_IMPORT)/include/ -I$(SRCS_ROOT_FDIR)/common/ 
 CFLAGS				+= -I$(SRCS_ROOT_FDIR)/command-line/ -I$(SRCS_ROOT_FDIR)/cheat/ 
 DFLAGS				+= -L$(OPENSOURCE_IMPORT)/lib/
 LIB_LINK			+= -lzlog -lpthread

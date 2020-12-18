@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include "broadcast.h"
-#include "clog.h"
+#include "utils.h"
 #include "server.h"
 
 pthread_t server_start()

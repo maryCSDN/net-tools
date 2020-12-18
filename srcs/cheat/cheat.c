@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#include "clog.h"
 #include "utils.h"
 #include "constant.h"
 #include "server.h"
